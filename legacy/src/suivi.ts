@@ -26,6 +26,9 @@ export function plusRecent(a: Scan, b: Scan): boolean {
 }
 
 // Le dernier scan d'un colis, ou null si le numéro est inconnu.
+/** La fonction grandit avec le nombre de scans car le scans.filter fait une comparaison entre tous les scans.numeroSuivi en face d'un numero: string, donc si scans[] = 100 000, ça fait 100 000 comparaisons.
+ * 
+*/
 export function dernierScan(scans: Scan[], numero: string): Scan | null {
   const trouves = scans.filter(s => s.numeroSuivi === numero);
   if (trouves.length === 0) return null;

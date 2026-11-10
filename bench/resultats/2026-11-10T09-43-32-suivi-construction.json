@@ -1,0 +1,27 @@
+{
+  "sujet": "suivi-construction",
+  "jeu": "grande",
+  "tailles": [
+    10000,
+    100000,
+    996844
+  ],
+  "variantes": [
+    "tableau",
+    "set",
+    "map"
+  ],
+  "repetitions": 5,
+  "echauffement": 3,
+  "chauffe_max_ms": 5000,
+  "statistique": "médiane",
+  "machine": {
+    "processeur": "Intel(R) Core(TM) i7-8650U CPU @ 1.90GHz",
+    "coeurs": 8,
+    "memoire_go": 15,
+    "systeme": "Linux 7.0.0-38-generic",
+    "node": "v22.19.0"
+  },
+  "date": "2026-11-10T09:43:32.171Z",
+  "csv": "bench/resultats/2026-11-10T09-43-32-suivi-construction.csv"
+}
