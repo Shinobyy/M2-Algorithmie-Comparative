@@ -14,11 +14,9 @@ qui tient sa fenêtre supporte d'être lent, un traitement qui en déborde ne le
 | Robustesse | comportement sur les doublons, les vides, les entrées invalides | ... |
 | Coût de mise en oeuvre | lignes changées, dépendances ajoutées, données à préparer | ... |
 
-Gardez les cinq lignes. Un critère qui ne compte pas pour ce ticket reçoit le poids 0 : c'est une décision, écrivez pourquoi.
+Une ligne par critère qui compte pour ce ticket, pas plus de cinq. Un poids à zéro est une décision, écrivez pourquoi.
 
 ## 2. Les options, note de 1 à 5 par critère
-
-Une note est un chiffre seul, de 1 à 5, par case : "4", pas "4/5" ni "4 (lisible)". La justification va sous le tableau.
 
 | Option | Temps | Mémoire | Lisibilité | Robustesse | Coût | Total pondéré |
 | --- | --- | --- | --- | --- | --- | --- |
@@ -32,4 +30,4 @@ Barème de la note de temps, à écrire ici avant de mesurer : la durée qui vau
 
 ## 3. La sensibilité
 
-Poussez le poids du temps à 5 et celui de la lisibilité à 1 : la décision change-t-elle ? Une phrase. Si vous avez le temps, cherchez aussi le poids du temps à partir duquel elle bascule. Si la décision bascule près des poids choisis, dites-le dans l'ADR : c'est une décision fragile, le CTO doit le savoir.
+Poussez le poids du temps à 5 et celui de la lisibilité à 1 : la décision change-t-elle ? Puis cherchez le poids du temps à partir duquel elle bascule. Une phrase chacun. Si la décision bascule près des poids choisis, dites-le dans l'ADR : c'est une décision fragile, le CTO doit le savoir.

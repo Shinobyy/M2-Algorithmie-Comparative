@@ -6,11 +6,11 @@ Une page. Six rubriques, dans cet ordre. Copiez ce fichier en `ADR-00N.md` et re
 
 Le ticket du jour, les volumes, la contrainte qui compte. Trois à cinq lignes.
 
-Exemple : la page "Où est mon colis" cherche un numéro de suivi parmi les 13 millions de scans gardés six mois en base, 70 000 de plus par jour (pièce 06). Elle est appelée 40 000 fois par jour. La contrainte est le temps de réponse par requête, pas le temps de construction.
+Exemple : la page "Où est mon colis" cherche un numéro de suivi parmi les événements de scan du jour, 70 000 lignes en septembre 2026, 1 200 000 sur un mois glissant. Elle est appelée 40 000 fois par jour. La contrainte est le temps de réponse par requête, pas le temps de construction.
 
 ## 2. Options comparées
 
-Deux au moins dans le carnet, la version naïve du legacy comprise ; en atelier, les trois options de la fiche (le correcteur les compte). Une ligne par option, avec la complexité annoncée.
+Deux au moins, la version naïve du legacy comprise. Une ligne par option, avec la complexité annoncée.
 
 - Option A (legacy) : ce que fait le code actuel. Complexité annoncée : O(...).
 - Option B : ... Complexité annoncée : O(...).
@@ -30,9 +30,8 @@ Le protocole en cinq lignes, puis le tableau, puis la courbe.
 | --- | --- | --- | --- | --- |
 | A | ... ms | ... ms | ... ms | ... Mo |
 | B | ... ms | ... ms | ... ms | ... Mo |
-| C | ... ms | ... ms | ... ms | ... Mo |
 
-Courbe : `bench/resultats/<horodatage>-<sujet>.svg` (générée par `npm run courbe -- <csv> --log`).
+Courbe : `bench/resultats/<horodatage>-<sujet>.svg` (générée par `npx tsx bench/courbe.ts <csv>`).
 
 ## 4. Décision
 
