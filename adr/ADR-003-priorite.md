@@ -1,12 +1,8 @@
-# ADR-000 - Titre de la décision (une ligne, à l'infinitif : "Retrouver un colis par son numéro de suivi")
-
-Une page. Six rubriques, dans cet ordre. Copiez ce fichier en `ADR-00N.md` et remplacez chaque bloc.
+# ADR-003 - Servir les colis les plus urgents d'abord sur le quai
 
 ## 1. Contexte
 
-Le ticket du jour, les volumes, la contrainte qui compte. Trois à cinq lignes.
-
-Exemple : la page "Où est mon colis" cherche un numéro de suivi parmi les événements de scan du jour, 70 000 lignes en septembre 2026, 1 200 000 sur un mois glissant. Elle est appelée 40 000 fois par jour. La contrainte est le temps de réponse par requête, pas le temps de construction.
+Le soir, les colis arrivent sur le quai et les préparateurs prennent toujours le plus urgent : les pharmacies d'abord, puis les express, puis le standard ; à priorité égale, par fin de créneau, puis par heure de création, puis par ordre d'arrivée. La file du legacy (2019) est retriée en entier à chaque arrivée. Le quai a reçu 9 000 colis le 9 novembre et en attend 15 000 par soir en décembre. La contrainte est double : tenir ce volume, et ne jamais servir un colis avant un plus urgent.
 
 ## 2. Options comparées
 
@@ -16,10 +12,8 @@ Exemple : la page "Où est mon colis" cherche un numéro de suivi parmi les év�
 
 ## 3. Mesures
 
-Le protocole en cinq lignes, puis le tableau, puis la courbe.
-
 - Machine : Intel Core i7-8650U, 8 cœurs, 15 Go, Linux 7.0.0-38, Node v22.19.0.
-- Jeu : `data/jeux/grande`, soirées de 1 000, 9 000 et 15 000 colis.
+- Jeu : `data/jeux/grande`, soirées de 1 000, 9 000 et 15 000 colis arrivés dans l'ordre de leur création.
 - Répétitions : 5, échauffement : 2.
 - Statistique retenue : la médiane.
 - Mesuré : durée de la soirée complète (arrivées et prises) et pic mémoire, sur le processus de Quai.
@@ -30,25 +24,26 @@ Le protocole en cinq lignes, puis le tableau, puis la courbe.
 | B tas | 3,8 ms | 28,6 ms | 49,0 ms | 2,1 Mo |
 | C seaux | 0,5 ms | 2,4 ms | 5,4 ms | 0,9 Mo |
 
-Épreuve : quand les colis arrivent dans l'ordre du fichier et non dans celui de leur création, le tas garde la somme de contrôle du legacy, mais la file à seaux la perd des 1 000 colis
+Les trois files rendent la même somme de contrôle à chaque taille. Épreuve : quand les colis arrivent dans l'ordre du fichier et non dans celui de leur création, le tas garde la somme de contrôle du legacy (89c52d41 à 1 000 colis), la file à seaux la perd dès 1 000 colis (bc776f41).
 
 Mesures : bench/resultats/2026-11-10T11-12-56-priorite.csv et bench/resultats/2026-11-10T11-13-31-priorite-arrivees.csv
 
-Courbe : bench/resultats/2026-11-10T11-12-56-priorite.svg.
+Courbe : bench/resultats/2026-11-10T11-12-56-priorite.svg
+
+Grille : `adr/GRILLE-ADR-003.md`, A 36, B 40, C 35.
 
 ## 4. Décision
 
-L'option retenue est la C, la file à seaux, pour sa rapidité et sa faible consommation mémoire.
+L'option retenue est la B, le tas binaire : 170 fois plus rapide que le legacy à 15 000 colis, et c'est la seule option rapide qui sert les colis dans le bon ordre quel que soit l'ordre d'arrivée sur le quai.
 
 ## 5. Conséquences et limites
 
-Ce que la décision coûte (mémoire, code, dépendance), ce qui n'a pas été mesuré. Trois à cinq lignes.
+Le tas ajoute une structure nouvelle pour l'équipe (`bench/variantes/tas.ts`, 59 lignes, sans dépendance) et une Map des rangs d'arrivée, à comprendre pour maintenir le code. La file à seaux, dix fois plus rapide, est écartée parce qu'elle ignore la fin de créneau et l'heure de création : elle ne redeviendrait possible que si l'ordre d'arrivée sur le quai était garanti.
 
-La décision coûte un peu de mémoire pour les files, mais pas de code supplémentaire. Elle ne tient pas compte des arrivées hors ordre de création, ni des priorités qui se chevauchent. Elle commence à poser problème à partir de 15 000 colis par contre
-
-Il a été testé sur des volumes de 1 000 à 15 000 colis, avec un seul livreur et un seul hub, sans doublons. La décision ne tient plus à partir de 15 000 colis.
+Domaine de validité : mesuré de 1 000 à 15 000 colis par soirée, sur un seul quai, doublons de numéro de suivi écartés, sur une seule machine. À 15 000 colis, la soirée coûte 49 ms ; en O(n log n) elle reste loin de la seconde bien au-delà de 100 000 colis, ce qui n'a pas été mesuré. Une priorité inconnue n'est rejetée par aucune option, le tas compris.
 
 ## 6. En trois phrases pour la directrice des opérations
 
-Le choix retenu est un ordonnancement par tas, qui est une meilleure structure de la donnée, qui permet de gérer plus rapidement les assignations des priorités pour les livraisons.
-La nouvelle méthode fait le même travail qu'avant en une vingtième de seconde et sert toujours les pharmacies dans l'ordre voulu.
+La nouvelle file du quai fait le travail de toute une soirée de décembre en un vingtième de seconde, contre plus de huit secondes aujourd'hui.
+Elle sert toujours les pharmacies en premier, même quand les colis arrivent sur le quai dans le désordre.
+L'option encore plus rapide a été écartée, car elle faisait passer certains colis avant de plus urgents.

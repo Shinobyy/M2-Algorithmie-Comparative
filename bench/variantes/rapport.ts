@@ -25,8 +25,14 @@ export function topKParTas(totaux: TotalClient[], k: number): TotalClient[] {
   const tas = new TasBinaire<TotalClient>((a, b) => meilleur(b, a));
   // À COMPLÉTER : parcourir les totaux. Tant que le tas compte moins de k clients, ajouter le client ;
   // ensuite, ne l'ajouter que s'il est meilleur que le sommet, en retirant d'abord le sommet.
-  void totaux; void k;
+
   // Le tas rend du moins bon au meilleur : on retourne la liste.
+  for (const t of totaux) {
+    // Si le tas contient moins de k clients, on ajoute le client. Sinon, on compare le client avec le sommet du tas (le moins bon des k meilleurs) : si le client est meilleur, on retire le sommet et on ajoute le client.
+    if (tas.taille < k) tas.ajouter(t);
+    else if (tas.sommet() && meilleur(t, tas.sommet()!) < 0) { tas.retirer(); tas.ajouter(t); }
+  }
+  
   const resultat: TotalClient[] = [];
   for (let t = tas.retirer(); t; t = tas.retirer()) resultat.push(t);
   return resultat.reverse();
