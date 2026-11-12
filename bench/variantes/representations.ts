@@ -47,11 +47,24 @@ export const matrice: Representation = s => {
 export interface Voisin { vers: number; metres: number }
 export const listes: Representation = s => {
   const voisins: Voisin[][] = Array.from({ length: s.n }, () => []);
-
+  
   // À COMPLÉTER (atelier 9) : ranger chaque arête k (de s.de[k] vers s.vers[k], longueur s.metres[k]) dans la
-  // liste de son noeud de départ, voisins[s.de[k]], sous la forme { vers, metres }. Puis, dans le parcours
+  // liste de son noeud de départ, voisins[s.de[k]], sous la forme { vers, metres }.
+  for (let k = 0; k < s.de.length; k++) {
+    voisins[s.de[k]].push(
+      {
+        vers: s.vers[k],
+        metres: s.metres[k]
+      }
+    );
+  }
+
+  //Puis, dans le parcours
   // ci-dessous, appeler visiter(...) pour chaque voisin de u, en lisant voisins[u].
   return largeur(s.n, (u, visiter) => {
+    for (const element of voisins[u]) {
+      visiter(element.vers);
+    }
   });
 };
 

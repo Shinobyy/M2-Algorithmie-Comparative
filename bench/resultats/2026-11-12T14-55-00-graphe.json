@@ -1,0 +1,26 @@
+{
+  "sujet": "graphe",
+  "jeu": "graphe",
+  "tailles": [
+    1000,
+    2000,
+    5000
+  ],
+  "variantes": [
+    "matrice",
+    "listes"
+  ],
+  "repetitions": 3,
+  "echauffement": 2,
+  "chauffe_max_ms": 5000,
+  "statistique": "médiane",
+  "machine": {
+    "processeur": "Intel(R) Core(TM) i7-8650U CPU @ 1.90GHz",
+    "coeurs": 8,
+    "memoire_go": 15,
+    "systeme": "Linux 7.0.0-38-generic",
+    "node": "v22.19.0"
+  },
+  "date": "2026-11-12T14:55:00.591Z",
+  "csv": "bench/resultats/2026-11-12T14-55-00-graphe.csv"
+}

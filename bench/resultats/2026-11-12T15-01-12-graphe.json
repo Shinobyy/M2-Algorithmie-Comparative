@@ -1,0 +1,26 @@
+{
+  "sujet": "graphe",
+  "jeu": "graphe",
+  "tailles": [
+    5000,
+    20000,
+    46565
+  ],
+  "variantes": [
+    "listes",
+    "compacts"
+  ],
+  "repetitions": 5,
+  "echauffement": 5,
+  "chauffe_max_ms": 5000,
+  "statistique": "médiane",
+  "machine": {
+    "processeur": "Intel(R) Core(TM) i7-8650U CPU @ 1.90GHz",
+    "coeurs": 8,
+    "memoire_go": 15,
+    "systeme": "Linux 7.0.0-38-generic",
+    "node": "v22.19.0"
+  },
+  "date": "2026-11-12T15:01:12.360Z",
+  "csv": "bench/resultats/2026-11-12T15-01-12-graphe.csv"
+}
