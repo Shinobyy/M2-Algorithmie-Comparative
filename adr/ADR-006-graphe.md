@@ -1,4 +1,4 @@
-# ADR-000 - Titre de la décision (une ligne, à l'infinitif : "Retrouver un colis par son numéro de suivi")
+# ADR-000 - Utiliser des tableaux compacts pour représenter le graphe de la métropole entière
 
 ## 1. Contexte
 
