@@ -83,12 +83,22 @@ export function deuxOpt(d: number[][], depart: number[], journal?: (e: Echange) 
     if (route[0] !== 0 || route[k + 1] !== 0 || route.length !== k + 2) throw new Error("le 2-opt a cassé la route : le hub (0) doit rester au début et à la fin ; l'inversion va de i + 1 à j");
     for (let i = 0; i < k - 1 && !ameliore; i++) {
       for (let j = i + 2; j <= k; j++) {
-        const a = route[i], b = route[i + 1], c = route[j], e = route[j + 1];
-        // À COMPLÉTER (atelier 11) : le gain d'un échange, en mètres. L'échange retire de la route les arêtes (a, b)
-        // et (c, e) et y ajoute les arêtes (a, c) et (b, e) ; d[x][y] est la distance par la route du point x au
-        // point y, en mètres. Le gain est la longueur de ce qu'on retire moins la longueur de ce qu'on ajoute. Juste
-        // en dessous, le segment n'est inversé que si le gain est strictement positif : la tournée raccourcit.
-        const gain = 0;                       // provisoire : sans le gain, aucun échange n'est fait
+        const a = route[i];
+        const b = route[i + 1];
+        const c = route[j];
+        const e = route[j + 1];
+        
+        const toRemove: number = d[a][b] + d[c][e];
+        const toAdd: number = d[a][c] + d[b][e];
+
+        // À COMPLÉTER (atelier 11) : le gain d'un échange, en mètres.
+        // L'échange retire de la route les arêtes (a, b) et (c, e) et y ajoute les arêtes (a, c) et (b, e) ;
+        // d[x][y] est la distance par la route du point x point y, en mètres.
+        // Le gain est la longueur de ce qu'on retire moins la longueur de ce qu'on ajoute.
+        // Juste en dessous, le segment n'est inversé que si le gain est strictement positif : la tournée raccourcit.
+
+        const gain = toRemove - toAdd;
+        
         if (gain > 0) {
           inverser(route, i + 1, j); echanges++; ameliore = true;
           if (journal) journal({ i, j, gain, metres: longueur(d, route.slice(1, k + 1)) });

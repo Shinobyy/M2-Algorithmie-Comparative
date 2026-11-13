@@ -70,6 +70,16 @@ function dijkstraTas(r: Reseau, depart: number, arrets: number[]): Reponse {
     // voisin en passant par u ; si elle est meilleure que celle notée dans dist, la noter, et mettre le voisin en
     // attente dans le tas avec cette distance pour priorité. dijkstraSimple, juste au-dessus, fait ce relâchement
     // sans tas : c'est le modèle à transposer, en quatre lignes.
+
+    for (let k = debut[u]; k < debut[u + 1]; k++) {
+      const voisin = cible[k];
+      const noeud = du + poids[k];
+      if (noeud < dist[voisin]) {
+        dist[voisin] = noeud;
+        tas.ajouter({ noeud: voisin, priorite: noeud });
+      }
+    }
+
   }
   return { distances: arrets.map(a => (fixe[a] ? dist[a] : -1)), fixes };
 }
@@ -89,7 +99,9 @@ function aEtoile(r: Reseau, depart: number, arret: number, g: Float64Array, fixe
   // À COMPLÉTER (atelier 10) : la priorité. Dans Dijkstra, le départ entre dans le tas avec la priorité 0, et chaque
   // voisin amélioré avec sa distance d. Dans A*, la priorité d'un noeud est sa distance déjà parcourue, plus ce que h
   // rend pour lui. Deux priorités à changer : celle du départ, ici, et celle du voisin v, dans la boucle.
-  tas.ajouter({ noeud: depart, priorite: 0 });
+
+  // Il faut commencer avec la valeur du vol d'oiseau du point de départ
+  tas.ajouter({ noeud: depart, priorite: h(depart) });
 
   while (tas.taille > 0) {
     const u = tas.retirer()!.noeud;
@@ -101,7 +113,8 @@ function aEtoile(r: Reseau, depart: number, arret: number, g: Float64Array, fixe
       if (d < g[v]) {
         if (g[v] === Number.POSITIVE_INFINITY) touches.push(v);
         g[v] = d;
-        tas.ajouter({ noeud: v, priorite: d });
+        // La priorité est définie avec la distance parcourue de la cible et la distance a vol d'oiseau avec le voisin v
+        tas.ajouter({ noeud: v, priorite: d + h(v) });
       }
     }
   }

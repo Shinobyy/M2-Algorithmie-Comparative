@@ -1,0 +1,27 @@
+{
+  "sujet": "tournees",
+  "jeu": "moyenne",
+  "tailles": [
+    1,
+    5,
+    20
+  ],
+  "variantes": [
+    "voisin",
+    "deuxopt",
+    "recuit"
+  ],
+  "repetitions": 3,
+  "echauffement": 1,
+  "chauffe_max_ms": 5000,
+  "statistique": "médiane",
+  "machine": {
+    "processeur": "Intel(R) Core(TM) i7-8650U CPU @ 1.90GHz",
+    "coeurs": 8,
+    "memoire_go": 15,
+    "systeme": "Linux 7.0.0-42-generic",
+    "node": "v22.19.0"
+  },
+  "date": "2026-11-13T15:07:36.378Z",
+  "csv": "bench/resultats/2026-11-13T15-07-36-tournees.csv"
+}

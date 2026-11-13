@@ -1,0 +1,25 @@
+{
+  "sujet": "chemins",
+  "jeu": "moyenne",
+  "tailles": [
+    1,
+    2
+  ],
+  "variantes": [
+    "simple",
+    "tas"
+  ],
+  "repetitions": 3,
+  "echauffement": 0,
+  "chauffe_max_ms": 5000,
+  "statistique": "médiane",
+  "machine": {
+    "processeur": "Intel(R) Core(TM) i7-8650U CPU @ 1.90GHz",
+    "coeurs": 8,
+    "memoire_go": 15,
+    "systeme": "Linux 7.0.0-42-generic",
+    "node": "v22.19.0"
+  },
+  "date": "2026-11-13T10:27:36.131Z",
+  "csv": "bench/resultats/2026-11-13T10-27-36-chemins.csv"
+}
